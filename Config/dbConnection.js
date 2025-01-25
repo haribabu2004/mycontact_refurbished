@@ -12,6 +12,6 @@ const connectDB = async () => {
     console.log(err);
     process.exit(1);
   }
-};
+};  
 // mongodb://localhost:27017
 module.exports = connectDB;
