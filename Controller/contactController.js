@@ -5,8 +5,7 @@ const Contact = require("../Models/contactModel");
 // private access
 
 const getContact = asyncHandler(async (req, res) => {
-  
-  const contact = await Contact.find({user_id:req.user.id});
+  const contact = await Contact.find({ user_id: req.user.id });
   res.status(200).json(contact);
 });
 
@@ -28,7 +27,12 @@ const createContact = asyncHandler(async (req, res) => {
   //   throw new Error("try another name");
   // }
 
-  const contact = await Contact.create({ name, email, phone });
+  const contact = await Contact.create({
+    name,
+    email,
+    phone,
+    user_id: req.user.id,
+  });
 
   res.status(201).json(contact);
 });
@@ -56,6 +60,11 @@ const updateContact = asyncHandler(async (req, res) => {
     throw new Error("contact not found");
   }
 
+  if (contact.user_id.toString() != req.user.id) {
+    res.status(400);
+    throw new Error("Wrong user detected for update");
+  }
+
   const updatecontact = await Contact.findByIdAndUpdate(
     req.params.id,
     req.body,
@@ -74,8 +83,13 @@ const deleteContact = asyncHandler(async (req, res) => {
     throw new Error("contact not found");
   }
 
+  if (contact.user_id.toString() != req.user.id) {
+    res.status(400);
+    throw new Error("Wrong user detected for delete");
+  }
+
   // res.json("hellp");
-  await Contact.findByIdAndDelete(req.params.id);
+  await Contact.findByIdAndDelete({_id : req.params.id});
   res.status(203).json(contact);
 });
 
