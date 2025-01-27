@@ -63,9 +63,22 @@ const loginUser = asyncHandler(async (req, res) => {
         },
       },
       process.env.ACCESS_TOKEN,
-      { expiresIn: "1m" }
+      { expiresIn: "1h" }
     );
-    res.status(200).json({ accessToken });
+
+    let token;
+    let authheader = req.headers.authorization;
+
+  // && authheader.startsWith("Bearer")
+  if (authheader) {
+    token = authheader.split(" ")[1];
+    console.log(token);
+    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN);
+    console.log(decoded);
+  }
+    
+    res.status(200).json({"message":"Login successfuk", accessToken });
+
   } else {
     res.status(400).json("wrong password");
   }
@@ -73,7 +86,7 @@ const loginUser = asyncHandler(async (req, res) => {
 
 // current0 user details
 // GET api/contacts/current
-// private   access
+// private access
 
 const currentUser = asyncHandler(async (req, res) => {
   res.json({ message: "current user details" });
@@ -82,5 +95,5 @@ const currentUser = asyncHandler(async (req, res) => {
 module.exports = {
   registerUser,
   loginUser,
-  currentUser,
+  currentUser 
 };

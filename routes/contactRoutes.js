@@ -7,9 +7,12 @@ const {
   updateContact,
   deleteContact
 } = require("../Controller/contactController");
+const validtoken = require("../Middleware/userHandleError");
+
+router.use(validtoken);
 
 router.route("/").get(getContact).post(createContact);
 
-router.route("/:id").get(getContactById).put(updateContact).delete(deleteContact);
+router.route("/get/:id").get(getContactById).put(updateContact).delete(deleteContact);
 
 module.exports = router;

@@ -2,10 +2,11 @@ const asyncHandler = require("express-async-handler");
 const Contact = require("../Models/contactModel");
 // get all contact
 // GET api/contacts
-// public access
+// private access
 
 const getContact = asyncHandler(async (req, res) => {
-  const contact = await Contact.find();
+  
+  const contact = await Contact.find({user_id:req.user.id});
   res.status(200).json(contact);
 });
 
@@ -34,7 +35,7 @@ const createContact = asyncHandler(async (req, res) => {
 
 // get contact by id
 // GET api/contacts
-// public access
+// private access
 const getContactById = asyncHandler(async (req, res) => {
   const contact = await Contact.findById(req.params.id);
   if (!contact) {
@@ -47,7 +48,7 @@ const getContactById = asyncHandler(async (req, res) => {
 
 // update contact
 // PUT api/contacts/:id
-// public access
+// private access
 const updateContact = asyncHandler(async (req, res) => {
   const contact = await Contact.findById(req.params.id);
   if (!contact) {
