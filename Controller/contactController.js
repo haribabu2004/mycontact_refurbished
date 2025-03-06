@@ -60,7 +60,7 @@ const updateContact = asyncHandler(async (req, res) => {
     throw new Error("contact not found");
   }
 
-  if (contact.user_id.toString() != req.user.id) {
+  if (contact.user_id.toString() !== req.user.id) {
     res.status(400);
     throw new Error("Wrong user detected for update");
   }
@@ -83,7 +83,7 @@ const deleteContact = asyncHandler(async (req, res) => {
     throw new Error("contact not found");
   }
 
-  if (contact.user_id.toString() != req.user.id) {
+  if (contact.user_id.toString() !== req.user.id) {
     res.status(400);
     throw new Error("Wrong user detected for delete");
   }

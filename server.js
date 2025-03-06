@@ -1,5 +1,4 @@
 const express = require("express");
-const errorHandle = require("./Middleware/handleError");
 const connectDB = require("./Config/dbConnection");
 const dotenv = require("dotenv").config();
 
@@ -10,7 +9,8 @@ const port = process.env.PORT || 5000;
 
 app.use(express.json());
 app.use("/api/contacts/", require("./routes/contactRoutes"));
-app.use("/api/contacts/", require("./routes/userRoutes"));
+app.use("/api/user/", require("./routes/userRoutes"));
+const errorHandle = require("./Middleware/handleError");
 app.use(errorHandle);
 
 app.listen(port, () => {

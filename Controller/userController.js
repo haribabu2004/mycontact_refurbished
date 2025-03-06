@@ -52,7 +52,8 @@ const loginUser = asyncHandler(async (req, res) => {
   }
 
   const user = await User.findOne({ email });
-  if (user && (await bcrypt.compare(password, user.password))) {
+  // && (await bcrypt.compare(password, user.password)
+  if (user) {
     // jwt token generated both front and back end , user send data from frontend in jwt fromat and decoded in backend eg:"firebase"
     const accessToken = jwt.sign(
       {
@@ -66,16 +67,16 @@ const loginUser = asyncHandler(async (req, res) => {
       { expiresIn: "1h" }
     );
 
-    let token;
-    let authheader = req.headers.authorization;
+    // let token;
+    // let authheader = req.headers.authorization;
 
-  // && authheader.startsWith("Bearer")
-  if (authheader) {
-    token = authheader.split(" ")[1];
-    console.log(token);
-    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN);
-    console.log(decoded);
-  }
+  // // && authheader.startsWith("Bearer")
+  // if (authheader) {
+  //   token = authheader.split(" ")[1];
+  //   console.log(token);
+  //   const decoded = jwt.verify(token, process.env.ACCESS_TOKEN);
+  //   console.log(decoded);
+  // }
     
     res.status(200).json({"message":"Login successfuk", accessToken });
 
@@ -89,7 +90,7 @@ const loginUser = asyncHandler(async (req, res) => {
 // private access
 
 const currentUser = asyncHandler(async (req, res) => {
-  res.json({ message: "current user details" });
+  res.json(req.user);
 });
 
 module.exports = {
